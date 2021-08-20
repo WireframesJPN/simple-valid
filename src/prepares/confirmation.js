@@ -1,3 +1,10 @@
+/**
+ *
+ * @param values
+ * @param key
+ * @param rule
+ * @returns {*}
+ */
 export default function (values, key, rule) {
   let confirmation_key = key + '_confirmation';
   if (values[confirmation_key] === undefined) {

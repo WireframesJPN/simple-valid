@@ -1,3 +1,9 @@
+/**
+ *
+ * @param value
+ * @param params
+ * @returns {boolean}
+ */
 export default (value, params) => {
   let result = false;
   for (let i = 0; i < params.length; i++) {

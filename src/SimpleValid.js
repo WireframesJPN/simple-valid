@@ -1,4 +1,5 @@
 import Errors from 'simple-error-object';
+
 /**
  * Check and Return Error Object.
  * Error Object is Using simple-error-object.
@@ -9,7 +10,11 @@ import Errors from 'simple-error-object';
  * }
  */
 export default class SimpleValid {
-
+  /**
+   *
+   * @param rules
+   * @param messages
+   */
   constructor (rules, messages) {
     this.rules = {};
     this.prepares = {};
@@ -20,6 +25,7 @@ export default class SimpleValid {
 
   /**
    * Add Rule
+   *
    * @param name
    * @param rule
    * @param message
@@ -38,6 +44,7 @@ export default class SimpleValid {
 
   /**
    * Add Rules
+   *
    * @param rules
    * @param messages
    */
@@ -50,10 +57,18 @@ export default class SimpleValid {
     }
   }
 
+  /**
+   *
+   * @param values
+   */
   setValues (values) {
     this.values = values;
   }
 
+  /**
+   *
+   * @param target
+   */
   setRules (target) {
     /**
      * // Create Rules Object Like this..
@@ -87,15 +102,16 @@ export default class SimpleValid {
 
   /**
    * execute validation.
+   *
    * @param {object} values
    * @param {object} rules
    * @param {object} messages
    * @returns {*}
    */
   execute (values, rules, messages={}) {
-
     this.setValues(values);
     this.setRules(rules);
+
     const errors = new Errors();
 
     try {
@@ -114,6 +130,12 @@ export default class SimpleValid {
     }
   }
 
+  /**
+   *
+   * @param ruleString
+   * @param key
+   * @returns {{name: string, params: (*|null)}}
+   */
   createRuleObject (ruleString, key) {
     /**
      * // Create Validation Rule Object Like this..
@@ -142,9 +164,14 @@ export default class SimpleValid {
       name: name,
       params: params ? params : null
     }
-
   }
 
+  /**
+   *
+   * @param rules
+   * @param value
+   * @returns {boolean|string}
+   */
   check (rules, value) {
     for (let i = 0; i < rules.length; i++) {
       let result = this.checkRule(value, rules[i]);
@@ -157,7 +184,7 @@ export default class SimpleValid {
 
   /**
    * check validation rules and add error if exist.
-   * error
+   *
    * @param value
    * @param rule
    * @return {string|boolean}
@@ -169,6 +196,13 @@ export default class SimpleValid {
     return this.rules[name](value, params) ? { name: name, value: value, rule: rule } : false;
   }
 
+  /**
+   *
+   * @param name
+   * @param target
+   * @param message
+   * @returns {*}
+   */
   getMessage (name, target, message) {
     let _message;
     if (message && message[target] !== undefined && message[target][name] !== undefined) {
@@ -178,6 +212,5 @@ export default class SimpleValid {
     }
     return _message;
   }
-
 }
 
