@@ -1,6 +1,6 @@
 /**
  *
- * @param value
+ * @param {*} value
  * @param params
  * @returns {string}
  */

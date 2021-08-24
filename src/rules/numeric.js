@@ -1,8 +1,11 @@
 /**
+ * rule format: `numeric`
  *
- * @param value
+ * The property under validation must be numeric.
+ *
+ * @param {*} value a variable to be tested
  * @param params
- * @returns {*|boolean}
+ * @returns {boolean}
  */
 export default (value, params) => {
   if (!['string', 'number'].includes(typeof value)) return true;

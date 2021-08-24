@@ -1,34 +1,85 @@
 import Errors from 'simple-error-object';
 
 /**
+ * A formatted object for testing.
+ * A given rule format becomes this like the following.
+ *
+ * ```
+ * 'required' => { name: 'required', params: null }
+ * 'email' => { name: 'email', params: null }
+ * 'between:1,10' => { name: 'between', params: ['1', '10'] }
+ * ```
+ *
+ * @typedef {Object} RuleFunctionConfig
+ * @property {string} name
+ * @property {(string[]|null)} params
+ */
+
+/**
+ * @callback RuleFunction
+ * @param {*} value
+ * @param {string[]|null} params
+ * @returns {boolean}
+ */
+
+/**
+ * @callback PrepareRuleFunction
+ * @param {Object<string, *>} values
+ * @param {string} key
+ * @returns {RuleFunction}
+ */
+
+/**
+ * @callback RuleMessageFactory
+ * @param {*} value
+ * @param {string[]|null} params
+ * @returns {string}
+ *
+ * @typedef {string|RuleMessageFactory} RuleMessage
+ */
+
+/**
  * Check and Return Error Object.
  * Error Object is Using simple-error-object.
  * https://github.com/WireframesJPN/simple-error-object
+ *
+ * ```
  * {
  *  user_id: 'required|email', // add validator with pipe,
  *  password: [ 'required', 'not_in:test,aaaa', 'regex:^[0-9a-zA-Z]+$' ] // or array.
  * }
+ * ```
  */
 export default class SimpleValid {
   /**
+   * class constructor
    *
-   * @param rules
-   * @param messages
+   * @param {Object<string, RuleFunction|[RuleFunction, PrepareRuleFunction]>} rules
+   * @param {Object<string, RuleMessage>} messages
    */
   constructor (rules, messages) {
+    /**
+     * @type {Object<string, RuleFunction>}
+     */
     this.rules = {};
-    this.prepares = {};
+    /**
+     * @type {Object<string, RuleMessage>}
+     */
     this.messages = {};
+    /**
+     * @type {Object<string, PrepareRuleFunction>}
+     */
+    this.prepares = {};
+
     this.addRules(rules, messages);
-    this.values = {};
   }
 
   /**
-   * Add Rule
+   * Add rule.
    *
-   * @param name
-   * @param rule
-   * @param message
+   * @param {string} name
+   * @param {RuleFunction|[RuleFunction, PrepareRuleFunction]} rule
+   * @param {RuleMessage} message
    */
   addRule (name, rule, message) {
     if (typeof rule !== 'function' && rule.length) {
@@ -43,10 +94,10 @@ export default class SimpleValid {
   }
 
   /**
-   * Add Rules
+   * Add Rules.
    *
-   * @param rules
-   * @param messages
+   * @param {Object<string, RuleFunction|[RuleFunction, PrepareRuleFunction]>} rules
+   * @param {Object<string, RuleMessage>} messages
    */
   addRules (rules, messages) {
     for (let key in rules) {
@@ -101,12 +152,12 @@ export default class SimpleValid {
   }
 
   /**
-   * execute validation.
+   * Execute validation.
    *
-   * @param {object} values
-   * @param {object} rules
-   * @param {object} messages
-   * @returns {*}
+   * @param {Object<string, *>} values
+   * @param {Object} rules
+   * @param {Object} messages
+   * @returns {Errors}
    */
   execute (values, rules, messages={}) {
     this.setValues(values);
@@ -161,7 +212,7 @@ export default class SimpleValid {
     }
 
     return {
-      name: name,
+      name,
       params: params ? params : null
     }
   }
@@ -174,34 +225,39 @@ export default class SimpleValid {
    */
   check (rules, value) {
     for (let i = 0; i < rules.length; i++) {
-      let result = this.checkRule(value, rules[i]);
+      const result = this.checkRule(value, rules[i]);
+
       if (result) {
         return result;
       }
     }
+
     return false;
   }
 
   /**
-   * check validation rules and add error if exist.
+   * Check validation rules and add error if exist.
    *
-   * @param value
-   * @param rule
-   * @return {string|boolean}
+   * @param {*} value
+   * @param {RuleFunction} rule
+   * @returns {string|{name: string, value: *, rule: RuleFunction}|boolean}
    */
   checkRule (value, rule) {
-    const name = rule.name;
-    const params = rule.params;
+    const { name, params } = rule;
+
     if (this.rules[name] === undefined) return 'norule';
-    return this.rules[name](value, params) ? { name: name, value: value, rule: rule } : false;
+
+    return this.rules[name](value, params) ? { name, value, rule } : false;
   }
 
   /**
+   * get error message for the property.
+   * If no message is given, the default message will return.
    *
-   * @param name
-   * @param target
-   * @param message
-   * @returns {*}
+   * @param {string} name
+   * @param {string} target
+   * @param {Object} [message]
+   * @returns {RuleMessage}
    */
   getMessage (name, target, message) {
     let _message;
