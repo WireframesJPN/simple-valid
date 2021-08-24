@@ -2,8 +2,8 @@
  *
  * @param {*} values
  * @param {string} key
- * @param {RuleFunction} rule
- * @returns {RuleFunction}
+ * @param {Rule} rule
+ * @returns {Rule}
  */
 export default function (values, key, rule) {
   let confirmation_key = key + '_confirmation';
