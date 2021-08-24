@@ -1,8 +1,20 @@
 import Errors from 'simple-error-object';
 
 /**
- * A formatted object for testing.
+ * A rule config that the property must pass
+ * It can be an array of rule formats, or must be a string joined with `|`.
+ *
+ * ```
+ * // 'required|email' or ['required', 'email']
+ * ```
+ *
+ * @typedef {string[]|string} RuleConfig
+ */
+
+/**
+ * A formatted config for Rule.
  * A given rule format becomes this like the following.
+ * SimpleValid finds a Rule from its own `rules` by `name` of a config.
  *
  * ```
  * 'required' => { name: 'required', params: null }
@@ -10,23 +22,30 @@ import Errors from 'simple-error-object';
  * 'between:1,10' => { name: 'between', params: ['1', '10'] }
  * ```
  *
- * @typedef {Object} RuleFunctionConfig
+ * @typedef {Object} FormattedRuleConfig
  * @property {string} name
  * @property {(string[]|null)} params
  */
 
 /**
- * @callback RuleFunction
+ * A function that validates `value`.
+ * when `value` passed the function, the function returns true.
+ *
+ * @callback Rule
  * @param {*} value
- * @param {string[]|null} params
+ * @param {FormattedRuleConfig.params} params
  * @returns {boolean}
  */
 
 /**
+ * A function that decorates the Rule.
+ * Because this function accepts all properties as `values`, for example you can compare the property with another one.
+ *
  * @callback PrepareRuleFunction
  * @param {Object<string, *>} values
  * @param {string} key
- * @returns {RuleFunction}
+ * @param {Rule} rule
+ * @returns {Rule}
  */
 
 /**
@@ -34,6 +53,10 @@ import Errors from 'simple-error-object';
  * @param {*} value
  * @param {string[]|null} params
  * @returns {string}
+ */
+
+/**
+ * An error message that the property cannot pass the rules.
  *
  * @typedef {string|RuleMessageFactory} RuleMessage
  */
@@ -54,12 +77,12 @@ export default class SimpleValid {
   /**
    * class constructor
    *
-   * @param {Object<string, RuleFunction|[RuleFunction, PrepareRuleFunction]>} rules
+   * @param {Object<string, Rule|[Rule, PrepareRuleFunction]>} rules
    * @param {Object<string, RuleMessage>} messages
    */
   constructor (rules, messages) {
     /**
-     * @type {Object<string, RuleFunction>}
+     * @type {Object<string, Rule>}
      */
     this.rules = {};
     /**
@@ -78,7 +101,7 @@ export default class SimpleValid {
    * Add rule.
    *
    * @param {string} name
-   * @param {RuleFunction|[RuleFunction, PrepareRuleFunction]} rule
+   * @param {Rule|[Rule, PrepareRuleFunction]} rule
    * @param {RuleMessage} message
    */
   addRule (name, rule, message) {
@@ -88,6 +111,7 @@ export default class SimpleValid {
     } else {
       if (typeof rule === 'function') this.rules[name] = rule;
     }
+
     if (message) {
       this.messages[name] = message;
     }
@@ -96,7 +120,7 @@ export default class SimpleValid {
   /**
    * Add Rules.
    *
-   * @param {Object<string, RuleFunction|[RuleFunction, PrepareRuleFunction]>} rules
+   * @param {Object<string, Rule|[Rule, PrepareRuleFunction]>} rules
    * @param {Object<string, RuleMessage>} messages
    */
   addRules (rules, messages) {
@@ -155,8 +179,8 @@ export default class SimpleValid {
    * Execute validation.
    *
    * @param {Object<string, *>} values
-   * @param {Object} rules
-   * @param {Object} messages
+   * @param {Object<string, RuleConfig>} rules
+   * @param {Object<string, RuleMessage>} [messages={}]
    * @returns {Errors}
    */
   execute (values, rules, messages={}) {
@@ -219,8 +243,8 @@ export default class SimpleValid {
 
   /**
    *
-   * @param rules
-   * @param value
+   * @param {FormattedRuleConfig[]} rules
+   * @param {*} value
    * @returns {boolean|string}
    */
   check (rules, value) {
@@ -239,8 +263,8 @@ export default class SimpleValid {
    * Check validation rules and add error if exist.
    *
    * @param {*} value
-   * @param {RuleFunction} rule
-   * @returns {string|{name: string, value: *, rule: RuleFunction}|boolean}
+   * @param {FormattedRuleConfig} rule
+   * @returns {string|{name: string, value: *, rule: Rule}|boolean}
    */
   checkRule (value, rule) {
     const { name, params } = rule;
