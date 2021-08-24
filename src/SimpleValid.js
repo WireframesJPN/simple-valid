@@ -127,11 +127,12 @@ export default class SimpleValid {
    * @param {Object<string, RuleMessage>} messages
    */
   addRules (rules, messages) {
-    for (let key in rules) {
-      if (messages[key] === undefined) {
-        messages[key] = `${key} was undefined`;
+    for (let rule_name in rules) {
+      if (messages[rule_name] === undefined) {
+        messages[rule_name] = `${rule_name} was undefined`;
       }
-      this.addRule(key, rules[key], messages[key]);
+
+      this.addRule(rule_name, rules[rule_name], messages[rule_name]);
     }
   }
 
