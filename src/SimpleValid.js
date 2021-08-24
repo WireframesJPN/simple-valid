@@ -105,11 +105,14 @@ export default class SimpleValid {
    * @param {RuleMessage} message
    */
   addRule (name, rule, message) {
-    if (typeof rule !== 'function' && rule.length) {
-      if (typeof rule[0] === 'function') this.rules[name] = rule[0];
-      if (typeof rule[1] === 'function') this.prepares[name] = rule[1];
-    } else {
-      if (typeof rule === 'function') this.rules[name] = rule;
+    if (typeof rule === 'function') {
+      this.rules[name] = rule;
+    } else if (rule.length) {
+      // rule must be [Rule, PrepareRuleFunction]
+      const [rule_function, prepare] = rule;
+
+      if (typeof rule_function === 'function') this.rules[name] = rule_function;
+      if (typeof prepare === 'function') this.prepares[name] = prepare;
     }
 
     if (message) {
