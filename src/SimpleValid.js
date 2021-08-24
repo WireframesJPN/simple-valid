@@ -133,6 +133,7 @@ export default class SimpleValid {
   }
 
   /**
+   * Set values.
    *
    * @param values
    */
@@ -141,34 +142,21 @@ export default class SimpleValid {
   }
 
   /**
+   * Set RuleConfig as FormattedRuleConfig.
    *
-   * @param target
+   * @param {Object<string, RuleConfig>} target
    */
   setRules (target) {
-    /**
-     * // Create Rules Object Like this..
-     * {
-     *  'email': [
-     *    { name: 'required', params: null },
-     *    { name: 'email', params: null },
-     *  ]
-     * }
-     */
     let result = {};
-    for (var key in target) {
-      var rules = target[key];
-      var ruleStrings;
-      /**
-       *
-       */
-      if (typeof rules != 'string' && rules.length !== undefined) {
-        ruleStrings = rules;
-      } else {
-        ruleStrings = rules.split('|');
-      }
+
+    for (let key in target) {
+      const rules = target[key];
+      const ruleStrings = typeof rules != 'string' && rules.length !== undefined ? rules : rules.split('|');
+
       result[key] = [];
-      for (var i = 0; i < ruleStrings.length; i++) {
-        result[key].push(this.createRuleObject(ruleStrings[i], key));
+
+      for (let i = 0; i < ruleStrings.length; i++) {
+        result[key].push(this.createFormattedRuleConfig(ruleStrings[i], key));
       }
     }
 
@@ -206,25 +194,18 @@ export default class SimpleValid {
   }
 
   /**
+   * Create FormattedRuleConfig from rule format.
    *
-   * @param ruleString
-   * @param key
-   * @returns {{name: string, params: (*|null)}}
+   * @param {string} ruleString
+   * @param {string} key
+   * @returns {FormattedRuleConfig}
    */
-  createRuleObject (ruleString, key) {
-    /**
-     * // Create Validation Rule Object Like this..
-     * {
-     *  name: '',
-     *  params: []
-     * }
-     */
+  createFormattedRuleConfig (ruleString, key) {
     let rule = ruleString.split(':');
-    let name = rule[0];
+    const name = rule[0];
 
-    // Preparing Rule Object.
     /**
-     * you can modify rule object if you set up the preparing object.
+     * you can modify rule item if you set up the preparing object.
      */
     if (this.prepares[name] !== undefined) {
       rule = this.prepares[name](this.values, key, rule)
