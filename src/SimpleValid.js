@@ -199,19 +199,19 @@ export default class SimpleValid {
   /**
    * Create FormattedRuleConfig from rule format.
    *
-   * @param {string} ruleString
-   * @param {string} key
+   * @param {string} ruleFormat
+   * @param {string} target_property_name
    * @returns {FormattedRuleConfig}
    */
-  createFormattedRuleConfig (ruleString, key) {
-    let rule = ruleString.split(':');
+  createFormattedRuleConfig (ruleFormat, target_property_name) {
+    let rule = ruleFormat.split(':');
     const name = rule[0];
 
     /**
      * you can modify rule item if you set up the preparing object.
      */
     if (this.prepares[name] !== undefined) {
-      rule = this.prepares[name](this.values, key, rule)
+      rule = this.prepares[name](this.values, target_property_name, rule)
     }
 
     let params;
