@@ -260,13 +260,10 @@ export default class SimpleValid {
    * @returns {RuleMessage}
    */
   getMessage (name, target, message) {
-    let _message;
     if (message && message[target] !== undefined && message[target][name] !== undefined) {
-      _message = message[target][name];
-    } else {
-      _message = this.messages[name]
+      return message[target][name];
     }
-    return _message;
+
+    return this.messages[name];
   }
 }
-
