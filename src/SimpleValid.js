@@ -1,7 +1,7 @@
 import Errors from 'simple-error-object';
 
 /**
- * A rule config that the property must pass
+ * A list of rules which the property must pass
  * It can be an array of rule formats, or must be a string joined with `|`.
  *
  * ```
@@ -45,17 +45,19 @@ import Errors from 'simple-error-object';
  */
 
 /**
- * A function that decorates the Rule.
+ * A function which decorates the Rule.
  * Because this function accepts all properties as `values`, for example you can compare the property with another one.
  *
  * @callback PrepareRule
- * @param {Object<string, *>} values
- * @param {string} key
+ * @param {Object<string, *>} values a whole object to be tested
+ * @param {string} key a name of the property to be tested
  * @param {Rule} rule
  * @returns {Rule}
  */
 
 /**
+ * an error message factory.
+ *
  * @callback RuleMessageFactory
  * @param {*} value a variable to be tested
  * @param {RuleParams} params
@@ -63,7 +65,7 @@ import Errors from 'simple-error-object';
  */
 
 /**
- * An error message that the property cannot pass the rules.
+ * an error message for the Rule.
  *
  * @typedef {string|RuleMessageFactory} RuleMessage
  */
