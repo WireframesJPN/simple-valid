@@ -350,7 +350,7 @@ describe('Validation New Rule Check', () => {
   it('add New Rule', () => {
     validate.addRule(
       'exact',
-      (value, params) => !(value === 'exact'),
+      (value, params) => value === 'exact',
       (value, params) => 'only "exact" is accept.'
     );
 
