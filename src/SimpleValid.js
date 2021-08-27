@@ -41,7 +41,7 @@ import Errors from 'simple-error-object';
  * A function that decorates the Rule.
  * Because this function accepts all properties as `values`, for example you can compare the property with another one.
  *
- * @callback PrepareRuleFunction
+ * @callback PrepareRule
  * @param {Object<string, *>} values
  * @param {string} key
  * @param {Rule} rule
@@ -77,7 +77,7 @@ export default class SimpleValid {
   /**
    * class constructor
    *
-   * @param {Object<string, Rule|[Rule, PrepareRuleFunction]>} rules
+   * @param {Object<string, Rule|[Rule, PrepareRule]>} rules
    * @param {Object<string, RuleMessage>} messages
    */
   constructor (rules, messages) {
@@ -90,7 +90,7 @@ export default class SimpleValid {
      */
     this.messages = {};
     /**
-     * @type {Object<string, PrepareRuleFunction>}
+     * @type {Object<string, PrepareRule>}
      */
     this.prepares = {};
 
@@ -101,14 +101,14 @@ export default class SimpleValid {
    * Add rule.
    *
    * @param {string} name
-   * @param {Rule|[Rule, PrepareRuleFunction]} rule
+   * @param {Rule|[Rule, PrepareRule]} rule
    * @param {RuleMessage} message
    */
   addRule (name, rule, message) {
     if (typeof rule === 'function') {
       this.rules[name] = rule;
     } else if (rule.length) {
-      // rule must be [Rule, PrepareRuleFunction]
+      // rule must be [Rule, PrepareRule]
       const [rule_function, prepare] = rule;
 
       if (typeof rule_function === 'function') this.rules[name] = rule_function;
@@ -123,7 +123,7 @@ export default class SimpleValid {
   /**
    * Add Rules.
    *
-   * @param {Object<string, Rule|[Rule, PrepareRuleFunction]>} rules
+   * @param {Object<string, Rule|[Rule, PrepareRule]>} rules
    * @param {Object<string, RuleMessage>} messages
    */
   addRules (rules, messages) {
