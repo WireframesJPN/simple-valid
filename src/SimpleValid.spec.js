@@ -310,6 +310,27 @@ describe('Validate Error Check', () => {
       });
     });
   });
+
+  describe('Rule: after', () => {
+    it('OK', () => {
+      chai.assert.equal(
+        simple_validator('2022-02-02', 'after:2021-01-01').has('test'),
+        true
+      );
+    })
+
+    it('NG', () => {
+      chai.assert.equal(
+        simple_validator('2021-01-01', 'after:2022-02-02').has('test'),
+        false
+      );
+
+      chai.assert.equal(
+        simple_validator('2022-02-02', 'after:2022-02-02').has('test'),
+        false
+      );
+    })
+  })
 });
 
 describe('Validation Message Check', () => {

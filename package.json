@@ -15,6 +15,7 @@
   "author": "Junzo Matsunoo <junzo_m@wire-frames.net>",
   "license": "ISC",
   "dependencies": {
+    "dayjs": "^1.10.6",
     "simple-error-object": "^0.5.0"
   },
   "devDependencies": {
