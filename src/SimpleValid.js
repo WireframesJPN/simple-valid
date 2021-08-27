@@ -165,8 +165,10 @@ export default class SimpleValid {
   checkRule (value, rule) {
     const name = rule.name;
     const params = rule.params;
+
     if (this.rules[name] === undefined) return 'norule';
-    return this.rules[name](value, params) ? { name: name, value: value, rule: rule } : false;
+
+    return this.rules[name](value, params) ? false : { name, value, rule };
   }
 
   getMessage (name, target, message) {
