@@ -1,7 +1,7 @@
 export default (value, params) => {
-  let result = false;
   for (let i = 0; i < params.length; i++) {
-    if (value === params[i]) result = true;
+    if (value === params[i]) return false;
   }
-  return result;
+
+  return true;
 }

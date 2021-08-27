@@ -1,6 +1,6 @@
 export default (value, params) => {
-  if (!['string', 'number'].includes(typeof value)) return true;
-  if (value === '') return true;
+  if (!['string', 'number'].includes(typeof value)) return false;
+  if (value === '') return false;
 
-  return isNaN(value);
+  return !isNaN(value);
 }
