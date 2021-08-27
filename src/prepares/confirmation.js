@@ -6,9 +6,11 @@
  * @returns {Rule}
  */
 export default function (values, key, rule) {
-  const confirmation_key = `${key}_confirmation`;
-
-  rule[1] = values[confirmation_key] === undefined ? '' : values[confirmation_key];
-
+  let confirmation_key = key + '_confirmation';
+  if (values[confirmation_key] === undefined) {
+    rule[1] = '';
+  } else {
+    rule[1] = values[confirmation_key];
+  }
   return rule;
 }

@@ -105,14 +105,11 @@ export default class SimpleValid {
    * @param {RuleMessage} message
    */
   addRule (name, rule, message) {
-    if (typeof rule === 'function') {
-      this.rules[name] = rule;
-    } else if (rule.length) {
-      // rule must be [Rule, PrepareRule]
-      const [rule_function, prepare] = rule;
-
-      if (typeof rule_function === 'function') this.rules[name] = rule_function;
-      if (typeof prepare === 'function') this.prepares[name] = prepare;
+    if (typeof rule !== 'function' && rule.length) {
+      if (typeof rule[0] === 'function') this.rules[name] = rule[0];
+      if (typeof rule[1] === 'function') this.prepares[name] = rule[1];
+    } else {
+      if (typeof rule === 'function') this.rules[name] = rule;
     }
 
     if (message) {
@@ -127,12 +124,12 @@ export default class SimpleValid {
    * @param {Object<string, RuleMessage>} messages
    */
   addRules (rules, messages) {
-    for (let rule_name in rules) {
-      if (messages[rule_name] === undefined) {
-        messages[rule_name] = `${rule_name} was undefined`;
+    for (let key in rules) {
+      if (messages[key] === undefined) {
+        messages[key] = `${key} was undefined`;
       }
 
-      this.addRule(rule_name, rules[rule_name], messages[rule_name]);
+      this.addRule(key, rules[key], messages[key]);
     }
   }
 
@@ -153,14 +150,20 @@ export default class SimpleValid {
   setRules (target) {
     let result = {};
 
-    for (let key in target) {
-      const rules = target[key];
-      const ruleStrings = typeof rules != 'string' && rules.length !== undefined ? rules : rules.split('|');
+    for (var key in target) {
+      var rules = target[key];
+      var ruleStrings;
+
+      if (typeof rules != 'string' && rules.length !== undefined) {
+        ruleStrings = rules;
+      } else {
+        ruleStrings = rules.split('|');
+      }
 
       result[key] = [];
 
-      for (let i = 0; i < ruleStrings.length; i++) {
-        result[key].push(this.createFormattedRuleConfig(ruleStrings[i], key));
+      for (var i = 0; i < ruleStrings.length; i++) {
+        result[key].push(this.createRuleObject(ruleStrings[i], key));
       }
     }
 
@@ -200,19 +203,19 @@ export default class SimpleValid {
   /**
    * Create FormattedRuleConfig from rule format.
    *
-   * @param {string} ruleFormat
-   * @param {string} target_property_name
+   * @param {string} ruleString
+   * @param {string} key
    * @returns {FormattedRuleConfig}
    */
-  createFormattedRuleConfig (ruleFormat, target_property_name) {
-    let rule = ruleFormat.split(':');
-    const name = rule[0];
+  createRuleObject (ruleString, key) {
+    let rule = ruleString.split(':');
+    let name = rule[0];
 
     /**
      * you can modify rule item if you set up the preparing object.
      */
     if (this.prepares[name] !== undefined) {
-      rule = this.prepares[name](this.values, target_property_name, rule)
+      rule = this.prepares[name](this.values, key, rule)
     }
 
     let params;
@@ -234,8 +237,7 @@ export default class SimpleValid {
    */
   check (rules, value) {
     for (let i = 0; i < rules.length; i++) {
-      const result = this.checkRule(value, rules[i]);
-
+      let result = this.checkRule(value, rules[i]);
       if (result) {
         return result;
       }
@@ -269,10 +271,12 @@ export default class SimpleValid {
    * @returns {RuleMessage}
    */
   getMessage (name, target, message) {
+    let _message;
     if (message && message[target] !== undefined && message[target][name] !== undefined) {
-      return message[target][name];
+      _message = message[target][name];
+    } else {
+      _message = this.messages[name]
     }
-
-    return this.messages[name];
+    return _message;
   }
 }
