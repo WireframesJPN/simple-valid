@@ -1,5 +1,7 @@
 /**
+ * This PrepareRuleFunction enable `confirmation` to compare original value with confirmation value.
  *
+ * @type {PrepareRule}
  * @param {*} values
  * @param {string} key
  * @param {Rule} rule

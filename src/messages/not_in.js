@@ -1,6 +1,8 @@
 /**
+ * A default RuleMessageFactory for `not_in`
  *
- * @param {*} value
+ * @type {RuleMessageFactory}
+ * @param {*} value a variable to be tested
  * @param params
  * @returns {string}
  */

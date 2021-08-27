@@ -3,6 +3,7 @@
  *
  * The property under validation must not be included in the given list of values.
  *
+ * @type {Rule}
  * @param {*} value a variable to be tested
  * @param {string[]} params A list of the given values at the rule format
  * @returns {boolean}

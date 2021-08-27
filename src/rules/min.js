@@ -19,6 +19,7 @@ import { getLength } from '../helpers';
  * console.log(Validator.execute({ target: 6 }, { target: 'min:4' })); // true
  * console.log(Validator.execute({ target: 3 }, { target: 'min:4' })); // false
  *
+ * @type {Rule}
  * @param {*} value a variable to be tested
  * @param {string|number} min_num a number that the value must be greater than or equals to
  * @returns {boolean}

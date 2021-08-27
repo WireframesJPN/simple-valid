@@ -23,6 +23,7 @@ import max from './max';
  * console.log(Validator.execute({ target: 3 }, { target: 'between:4,6' })); // false
  * console.log(Validator.execute({ target: 7 }, { target: 'between:4,6' })); // false
  *
+ * @type {Rule}
  * @param {*} value a variable to be tested
  * @param {string|number} min_num a number that the value must be greater than or equals to
  * @param {string|number} max_num a number that the value must be less than or equals to

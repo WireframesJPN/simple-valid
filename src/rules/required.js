@@ -7,6 +7,7 @@
  *   * The value is undefined.
  *   * The value is empty string.
  *
+ * @type {Rule}
  * @param {*} value a variable to be tested
  * @param params
  * @returns {boolean}

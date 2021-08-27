@@ -3,6 +3,7 @@
  *
  * The property under validation must be numeric.
  *
+ * @type {Rule}
  * @param {*} value a variable to be tested
  * @param params
  * @returns {boolean}

@@ -25,8 +25,9 @@ import prepares from '../prepares/confirmation';
  *
  * console.log(pass_result); // true
  *
+ * @type {Rule}
  * @param {*} value a variable to be tested
- * @param original_password an original password to be compared
+ * @param {*} original_password an original password to be compared
  * @returns {boolean}
  */
 const rule = (value, [original_password]) => {

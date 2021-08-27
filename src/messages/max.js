@@ -1,6 +1,8 @@
 /**
+ * A default RuleMessageFactory for `max`
  *
- * @param {*} values
+ * @type {RuleMessageFactory}
+ * @param {*} value a variable to be tested
  * @param params
  * @returns {string}
  */

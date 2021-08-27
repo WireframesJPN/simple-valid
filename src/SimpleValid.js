@@ -24,16 +24,23 @@ import Errors from 'simple-error-object';
  *
  * @typedef {Object} FormattedRuleConfig
  * @property {string} name
- * @property {(string[]|null)} params
+ * @property {RuleParams} params
  */
 
 /**
- * A function that validates `value`.
+ * A list of parameters which is given to the Rule.
+ * The length and the type of each elements depend on the rules.
+ *
+ * @typedef {Array<*>} RuleParams
+ */
+
+/**
+ * A function which validates `value`.
  * when `value` passed the function, the function returns true.
  *
  * @callback Rule
- * @param {*} value
- * @param {FormattedRuleConfig.params} params
+ * @param {*} value a variable to be tested
+ * @param {RuleParams} params
  * @returns {boolean}
  */
 
@@ -50,8 +57,8 @@ import Errors from 'simple-error-object';
 
 /**
  * @callback RuleMessageFactory
- * @param {*} value
- * @param {string[]|null} params
+ * @param {*} value a variable to be tested
+ * @param {RuleParams} params
  * @returns {string}
  */
 

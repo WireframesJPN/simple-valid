@@ -5,6 +5,7 @@
  * this rule uses the Javascript `RegExp` class and its `match` method.
  * The pattern specified should obey the same formatting required by `match` method and thus also include valid delimiters.
  *
+ * @type {Rule}
  * @param {*} value a variable to be tested
  * @param {string} pattern
  * @returns {boolean}
