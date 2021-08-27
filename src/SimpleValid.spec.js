@@ -8,14 +8,14 @@ describe('Validate Error Check', () => {
     it('OK', () => {
       chai.assert.equal(
         simple_validator('OK', 'required').has('test'),
-        true
+        false
       )
     });
 
     it('NG', () => {
       chai.assert.equal(
         simple_validator('', 'required').has('test'),
-        false
+        true
       );
     });
   });
@@ -24,14 +24,14 @@ describe('Validate Error Check', () => {
     it('OK', () => {
       chai.assert.equal(
         simple_validator('test@wire.com', 'email').has('test'),
-        true
+        false
       );
     });
 
     it('NG', () => {
       chai.assert.equal(
         simple_validator('fefeafea.vee', 'email').has('test'),
-        false
+        true
       );
     });
   });
@@ -40,14 +40,14 @@ describe('Validate Error Check', () => {
     it('OK', () => {
       chai.assert.equal(
         simple_validator('not_in is not error', 'not_in:test').has('test'),
-        true
+        false
       );
     });
 
     it('NG', () => {
       chai.assert.equal(
         simple_validator('test', 'not_in:test,test2').has('test'),
-        false
+        true
       );
     });
   });
@@ -56,19 +56,19 @@ describe('Validate Error Check', () => {
     it('OK', () => {
       chai.assert.equal(
         simple_validator('test', 'min:3').has('test'),
-        true
+        false
       );
 
       chai.assert.equal(
         simple_validator('test', 'min:4').has('test'),
-        true
+        false
       );
     });
 
     it('NG', () => {
       chai.assert.equal(
         simple_validator('test', 'min:5').has('test'),
-        false
+        true
       );
     });
   });
@@ -77,19 +77,19 @@ describe('Validate Error Check', () => {
     it('OK', () => {
       chai.assert.equal(
         simple_validator('test', 'max:5').has('test'),
-        true
+        false
       );
 
       chai.assert.equal(
         simple_validator('test', 'max:4').has('test'),
-        true
+        false
       );
     });
 
     it('NG', () => {
       chai.assert.equal(
         simple_validator('test', 'max:3').has('test'),
-        false
+        true
       );
     });
   });
@@ -98,39 +98,39 @@ describe('Validate Error Check', () => {
     it('OK', () => {
       chai.assert.equal(
         simple_validator('testing', 'between:6,8').has('test'),
-        true
+        false
       );
 
       chai.assert.equal(
         simple_validator('testing', 'between:7,8').has('test'),
-        true
+        false
       );
 
       chai.assert.equal(
         simple_validator('testing', 'between:6,7').has('test'),
-        true
+        false
       );
 
       chai.assert.equal(
         simple_validator('testing', 'between:7,7').has('test'),
-        true
+        false
       );
     });
 
     it('NG', () => {
       chai.assert.equal(
         simple_validator(null, 'between:6,6').has('test'),
-        false
+        true
       );
 
       chai.assert.equal(
         simple_validator('testing', 'between:6,6').has('test'),
-        false
+        true
       );
 
       chai.assert.equal(
         simple_validator('testing', 'between:8,8').has('test'),
-        false
+        true
       );
     });
   });
@@ -139,104 +139,104 @@ describe('Validate Error Check', () => {
     it('OK', () => {
       chai.assert.equal(
         simple_validator(0, 'numeric').has('test'),
-        true
+        false
       );
 
       chai.assert.equal(
         simple_validator('0', 'numeric').has('test'),
-        true
+        false
       );
 
       chai.assert.equal(
         simple_validator(1, 'numeric').has('test'),
-        true
+        false
       );
 
       chai.assert.equal(
         simple_validator('1', 'numeric').has('test'),
-        true
+        false
       );
 
       chai.assert.equal(
         simple_validator(2, 'numeric').has('test'),
-        true
+        false
       );
 
       chai.assert.equal(
         simple_validator('2', 'numeric').has('test'),
-        true
+        false
       );
 
       chai.assert.equal(
         simple_validator(3.3, 'numeric').has('test'),
-        true
+        false
       );
 
       chai.assert.equal(
         simple_validator('3.3', 'numeric').has('test'),
-        true
+        false
       );
 
       chai.assert.equal(
         simple_validator(-4, 'numeric').has('test'),
-        true
+        false
       );
 
       chai.assert.equal(
         simple_validator('-4', 'numeric').has('test'),
-        true
+        false
       );
     });
 
     it('NG', () => {
       chai.assert.equal(
         simple_validator(null, 'numeric').has('test'),
-        false
+        true
       );
 
       chai.assert.equal(
         simple_validator(NaN, 'numeric').has('test'),
-        false
+        true
       );
 
       chai.assert.equal(
         simple_validator('', 'numeric').has('test'),
-        false
+        true
       );
 
       chai.assert.equal(
         simple_validator('test', 'numeric').has('test'),
-        false
+        true
       );
 
       chai.assert.equal(
         simple_validator('1test', 'numeric').has('test'),
-        false
+        true
       );
 
       chai.assert.equal(
         simple_validator('test1', 'numeric').has('test'),
-        false
+        true
       );
 
       chai.assert.equal(
         simple_validator([], 'numeric').has('test'),
-        false
+        true
       );
 
       chai.assert.equal(
         simple_validator([1], 'numeric').has('test'),
-        false
+        true
       );
 
       chai.assert.equal(
         simple_validator([1, 2], 'numeric').has('test'),
-        false
+        true
       );
 
       chai.assert.equal(
         simple_validator({}, 'numeric').has('test'),
-        false
+        true
       );
     });
   });
@@ -245,14 +245,14 @@ describe('Validate Error Check', () => {
     it('OK', () => {
       chai.assert.equal(
         simple_validator('http://test.com', 'regex:^http://').has('test'),
-        true
+        false
       );
     });
 
     it('NG', () => {
       chai.assert.equal(
         simple_validator('test.com', 'regex:^http://').has('test'),
-        false
+        true
       );
     });
   });
@@ -264,7 +264,7 @@ describe('Validate Error Check', () => {
           {'test': 'test', 'test_confirmation': 'test'},
           {'test': 'confirmation'}
         ).has('test'),
-        true
+        false
       );
     });
 
@@ -274,7 +274,7 @@ describe('Validate Error Check', () => {
           {'test': 'test.com', 'test_confirmation': 'test'},
           {'test': 'confirmation'}
         ).has('test'),
-        false
+        true
       )
     });
   });
@@ -287,7 +287,7 @@ describe('Validate Error Check', () => {
             {'test': 'test@test.com'},
             {'test': 'required|email'}
           ).has('test'),
-          true
+          false
         );
       });
 
@@ -297,7 +297,7 @@ describe('Validate Error Check', () => {
             {'test': 'test.com'},
             {'test': 'required|email'}
           ).has('test'),
-          false
+          true
         );
 
         chai.assert.equal(
@@ -305,7 +305,7 @@ describe('Validate Error Check', () => {
             {'test': ''},
             {'test': 'required|email'}
           ).has('test'),
-          false
+          true
         );
       });
     });
@@ -359,7 +359,7 @@ describe('Validation New Rule Check', () => {
         { test: 'exact' },
         { test: 'required|exact' }
       ).get('test'),
-      true
+      false
     );
   });
 });
