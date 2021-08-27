@@ -100,9 +100,9 @@ export default class SimpleValid {
 
     try {
       for (let target in this.check_rules) {
-        let target_val = this.values[target] === undefined ? false : this.values[target];
-        if (target_val === false) throw 'Missing Validation Target.';
-        let error = this.check(this.check_rules[target], target_val);
+        let target_val = this.values[target] === undefined;
+        if (target_val) throw 'Missing Validation Target.';
+        let error = this.check(this.check_rules[target], this.values[target]);
         if (error) {
           let message = this.getMessage(error.name, target, messages);
           errors.add(target, (typeof message === 'function' ? message(error.value, error.rule.params) : message))
