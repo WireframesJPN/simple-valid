@@ -27,11 +27,11 @@ import max from './max';
  * @param {*} value a variable to be tested
  * @param {string|number} min_num a number that the value must be greater than or equals to
  * @param {string|number} max_num a number that the value must be less than or equals to
- * @returns {boolean}
+ * @returns {Promise<boolean>}
  */
-export default (value, [min_num, max_num]) => {
-  const min_failed = min(value, [min_num]);
-  const max_failed = max(value, [max_num]);
+export default (value, [min_num, max_num]) => new Promise(async (resolve) => {
+  const min_failed = await min(value, [min_num]);
+  const max_failed = await max(value, [max_num]);
 
-  return min_failed || max_failed;
-}
+  resolve(min_failed || max_failed);
+})

@@ -51,7 +51,7 @@ import Errors from 'simple-error-object';
  * @callback Rule
  * @param {*} value a variable to be tested
  * @param {RuleParams} params
- * @returns {boolean}
+ * @returns {Promise<boolean>}
  */
 
 /**
@@ -195,9 +195,9 @@ export default class SimpleValid {
    * @param {Object<string, *>} values
    * @param {Object<string, RuleConfig>} rules
    * @param {Object<string, RuleMessage>} [messages={}]
-   * @returns {Errors}
+   * @returns {Promise<Errors, Error>}
    */
-  execute (values, rules, messages={}) {
+  async execute (values, rules, messages={}) {
     this.setValues(values);
     this.setRules(rules);
 
@@ -207,15 +207,19 @@ export default class SimpleValid {
       for (let target in this.check_rules) {
         let target_val = this.values[target] === undefined ? false : this.values[target];
         if (target_val === false) throw 'Missing Validation Target.';
-        let error = this.check(this.check_rules[target], target_val);
+
+        const error = await this.check(this.check_rules[target], target_val);
+
         if (error) {
           let message = this.getMessage(error.name, target, messages);
           errors.add(target, (typeof message === 'function' ? message(error.value, error.rule.params) : message))
         }
       }
+
       return errors;
     } catch (e) {
       console.error(e);
+      throw e;
     }
   }
 
@@ -252,11 +256,12 @@ export default class SimpleValid {
    *
    * @param {FormattedRuleConfig[]} rules
    * @param {*} value
-   * @returns {boolean|string}
+   * @returns {Promise<boolean|string>}
    */
-  check (rules, value) {
+  async check (rules, value) {
     for (let i = 0; i < rules.length; i++) {
-      let result = this.checkRule(value, rules[i]);
+      const result = await this.checkRule(value, rules[i]);
+
       if (result) {
         return result;
       }
@@ -270,14 +275,16 @@ export default class SimpleValid {
    *
    * @param {*} value
    * @param {FormattedRuleConfig} rule
-   * @returns {string|{name: string, value: *, rule: Rule}|boolean}
+   * @returns {Promise<string|{name: string, value: *, rule: Rule}|boolean>}
    */
-  checkRule (value, rule) {
+  async checkRule (value, rule) {
     const { name, params } = rule;
 
     if (this.rules[name] === undefined) return 'norule';
 
-    return this.rules[name](value, params) ? { name, value, rule } : false;
+    const result = await this.rules[name](value, params);
+
+    return result ? { name, value, rule } : false;
   }
 
   /**

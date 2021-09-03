@@ -6,12 +6,14 @@
  * @type {Rule}
  * @param {*} value a variable to be tested
  * @param {string[]} params A list of the given values at the rule format
- * @returns {boolean}
+ * @returns {Promise<boolean>}
  */
-export default (value, params) => {
+export default (value, params) => new Promise((resolve) => {
   let result = false;
+
   for (let i = 0; i < params.length; i++) {
     if (value === params[i]) result = true;
   }
-  return result;
-}
+
+  resolve(result);
+})

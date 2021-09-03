@@ -10,10 +10,8 @@
  * @type {Rule}
  * @param {*} value a variable to be tested
  * @param params
- * @returns {boolean}
+ * @returns {Promise<boolean>}
  */
-export default (value, params) => {
-  return value === ''
-    || value === null
-    || value === undefined;
-}
+export default (value, params) => new Promise((resolve) => {
+  resolve(value === '' || value === null || value === undefined);
+})

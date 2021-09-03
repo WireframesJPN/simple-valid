@@ -8,10 +8,11 @@
  * @type {Rule}
  * @param {*} value a variable to be tested
  * @param {string} pattern
- * @returns {boolean}
+ * @returns {Promise<boolean>}
  */
-export default (value, [pattern]) => {
+export default (value, [pattern]) => new Promise((resolve) => {
   const regExp = new RegExp(pattern);
   const result = value.match(regExp);
-  return result === null || !result[0];
-}
+
+  resolve(result === null || !result[0]);
+})
