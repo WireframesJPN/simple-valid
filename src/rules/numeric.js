@@ -6,11 +6,11 @@
  * @type {Rule}
  * @param {*} value a variable to be tested
  * @param params
- * @returns {boolean}
+ * @returns {Promise<boolean>}
  */
-export default (value, params) => {
-  if (!['string', 'number'].includes(typeof value)) return true;
-  if (value === '') return true;
+export default (value, params) => new Promise((resolve) => {
+  if (!['string', 'number'].includes(typeof value)) resolve(true);
+  if (value === '') resolve(true);
 
-  return isNaN(value);
-}
+  resolve(isNaN(value));
+})

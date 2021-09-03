@@ -22,8 +22,8 @@ import { getLength } from '../helpers';
  * @type {Rule}
  * @param {*} value a variable to be tested
  * @param {string|number} num a number that the value must be less than or equals to
- * @returns {boolean}
+ * @returns {Promise<boolean>}
  */
-export default (value, [num]) => {
-  return getLength(value) > parseFloat(num);
-}
+export default (value, [num]) => new Promise((resolve) => {
+  resolve(getLength(value) > parseFloat(num));
+})

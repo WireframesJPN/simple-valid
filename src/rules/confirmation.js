@@ -28,11 +28,11 @@ import prepares from '../prepares/confirmation';
  * @type {Rule}
  * @param {*} value a variable to be tested
  * @param {*} original_password an original password to be compared
- * @returns {boolean}
+ * @returns {Promise<boolean>}
  */
-const rule = (value, [original_password]) => {
-  return value !== original_password;
-};
+const rule = (value, [original_password]) => new Promise((resolve) => {
+  resolve(value !== original_password);
+});
 
 export default [
   rule,
