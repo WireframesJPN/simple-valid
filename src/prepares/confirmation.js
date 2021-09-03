@@ -1,3 +1,12 @@
+/**
+ * This PrepareRuleFunction enable `confirmation` to compare original value with confirmation value.
+ *
+ * @type {PrepareRule}
+ * @param {*} values
+ * @param {string} key
+ * @param {Rule} rule
+ * @returns {Rule}
+ */
 export default function (values, key, rule) {
   let confirmation_key = key + '_confirmation';
   if (values[confirmation_key] === undefined) {
