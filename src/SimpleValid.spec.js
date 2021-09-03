@@ -257,6 +257,74 @@ describe('Validate Error Check', () => {
     });
   });
 
+  describe('Rule: accepted', () => {
+    it('OK', () => {
+      chai.assert.equal(
+        simple_validator('yes', 'accepted').has('test'),
+        false
+      );
+      chai.assert.equal(
+        simple_validator('on', 'accepted').has('test'),
+        false
+      );
+      chai.assert.equal(
+        simple_validator('1', 'accepted').has('test'),
+        false
+      );
+      chai.assert.equal(
+        simple_validator('true', 'accepted').has('test'),
+        false
+      );
+      chai.assert.equal(
+        simple_validator(1, 'accepted').has('test'),
+        false
+      );
+      chai.assert.equal(
+        simple_validator(true, 'accepted').has('test'),
+        false
+      );
+    });
+
+    it('NG', () => {
+      chai.assert.equal(
+        simple_validator('', 'accepted').has('test'),
+        true
+      );
+      chai.assert.equal(
+        simple_validator('no', 'accepted').has('test'),
+        true
+      );
+      chai.assert.equal(
+        simple_validator('off', 'accepted').has('test'),
+        true
+      );
+      chai.assert.equal(
+        simple_validator('onn', 'accepted').has('test'),
+        true
+      );
+      chai.assert.equal(
+        simple_validator('0', 'accepted').has('test'),
+        true
+      );
+      chai.assert.equal(
+        simple_validator('false', 'accepted').has('test'),
+        true
+      );
+      chai.assert.equal(
+        simple_validator(0, 'accepted').has('test'),
+        true
+      );
+      chai.assert.equal(
+        simple_validator(null, 'accepted').has('test'),
+        true
+      );
+      chai.assert.equal(
+        simple_validator(false, 'accepted').has('test'),
+        true
+      );
+    });
+  });
+
   describe('Rule: confirmation', () => {
     it('OK', () => {
       chai.assert.equal(
