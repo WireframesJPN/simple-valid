@@ -1,3 +1,4 @@
+import accepted from './accepted';
 import min from './min';
 import max from './max';
 import between from './between';
@@ -9,6 +10,7 @@ import required from './required';
 import confirmation from './confirmation';
 
 export default {
+  accepted,
   min,
   max,
   between,
