@@ -264,7 +264,15 @@ describe('Validate Error Check', () => {
         false
       );
       chai.assert.equal(
+        simple_validator('Yes', 'accepted').has('test'),
+        false
+      );
+      chai.assert.equal(
         simple_validator('on', 'accepted').has('test'),
+        false
+      );
+      chai.assert.equal(
+        simple_validator('ON', 'accepted').has('test'),
         false
       );
       chai.assert.equal(
@@ -273,6 +281,10 @@ describe('Validate Error Check', () => {
       );
       chai.assert.equal(
         simple_validator('true', 'accepted').has('test'),
+        false
+      );
+      chai.assert.equal(
+        simple_validator('TRUE', 'accepted').has('test'),
         false
       );
       chai.assert.equal(
