@@ -4,8 +4,8 @@
  * @type {PrepareRule}
  * @param {*} values
  * @param {string} key
- * @param {Rule} rule
- * @returns {Rule}
+ * @param {RuleFormat} rule
+ * @returns {RuleFormat}
  */
 export default function (values, key, rule) {
   let confirmation_key = key + '_confirmation';

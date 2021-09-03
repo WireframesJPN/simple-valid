@@ -12,6 +12,16 @@ import Errors from 'simple-error-object';
  */
 
 /**
+ * A list of rule formats which split with `:`
+ *
+ * ```
+ * // 'between:1,10' => ['between', '1,10']
+ * ```
+ *
+ * @typedef {[string, string]} RuleFormat
+ */
+
+/**
  * A formatted config for Rule.
  * A given rule format becomes this like the following.
  * SimpleValid finds a Rule from its own `rules` by `name` of a config.
@@ -51,8 +61,8 @@ import Errors from 'simple-error-object';
  * @callback PrepareRule
  * @param {Object<string, *>} values a whole object to be tested
  * @param {string} key a name of the property to be tested
- * @param {Rule} rule
- * @returns {Rule}
+ * @param {RuleFormat} rule
+ * @returns {RuleFormat}
  */
 
 /**
