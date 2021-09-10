@@ -1,12 +1,8 @@
-import dayjs from "dayjs";
+import { isAfter } from 'date-fns';
+import date from './date';
 
 export default (value, params) => {
-  const day = dayjs(value);
-  const after = dayjs(params);
+  if (date(value) || date(params)) return true;
 
-  if ( !day.isValid() || !after.isValid() ) {
-    return false;
-  }
-
-  return day.isAfter(after);
+  return !isAfter(new Date(value), new Date(params));
 }
