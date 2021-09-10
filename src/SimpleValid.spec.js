@@ -9,12 +9,57 @@ describe('Validate Error Check', () => {
       chai.assert.equal(
         simple_validator('OK', 'required').has('test'),
         false
-      )
+      );
+
+      chai.assert.equal(
+        simple_validator('0', 'required').has('test'),
+        false
+      );
+
+      chai.assert.equal(
+        simple_validator(0, 'required').has('test'),
+        false
+      );
+
+      chai.assert.equal(
+        simple_validator(1, 'required').has('test'),
+        false
+      );
+
+      chai.assert.equal(
+        simple_validator(-1, 'required').has('test'),
+        false
+      );
+
+      chai.assert.equal(
+        simple_validator(['array has some elements'], 'required').has('test'),
+        false
+      );
+
+      chai.assert.equal(
+        simple_validator({}, 'required').has('test'),
+        false
+      );
+
+      chai.assert.equal(
+        simple_validator({ length: 0 }, 'required').has('test'),
+        false
+      );
     });
 
     it('NG', () => {
       chai.assert.equal(
+        simple_validator(null, 'required').has('test'),
+        true
+      );
+
+      chai.assert.equal(
         simple_validator('', 'required').has('test'),
+        true
+      );
+
+      chai.assert.equal(
+        simple_validator([], 'required').has('test'),
         true
       );
     });
