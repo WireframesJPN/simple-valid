@@ -1,6 +1,7 @@
 /**
  * get length of array|string|number.
- * @param obj
+ *
+ * @param {*} obj
  * @returns {boolean}
  */
 export const getLength = (obj) => {
