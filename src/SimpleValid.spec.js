@@ -310,6 +310,32 @@ describe('Validate Error Check', () => {
       });
     });
   });
+
+  describe('Rule: after', () => {
+    it('OK', () => {
+      chai.assert.equal(
+        simple_validator('2021-12-31', 'after:2021-01-01').has('test'),
+        false
+      );
+    })
+
+    it('NG', () => {
+      chai.assert.equal(
+        simple_validator('2020-12-31', 'after:2021-01-01').has('test'),
+        true
+      );
+
+      chai.assert.equal(
+        simple_validator('2021-01-01', 'after:2021-01-01').has('test'),
+        true
+      );
+
+      chai.assert.equal(
+        simple_validator('Invalid Date', 'after:2021-01-01').has('test'),
+        true
+      );
+    })
+  })
 });
 
 describe('Validation Message Check', () => {
