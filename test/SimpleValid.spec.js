@@ -1,7 +1,7 @@
 import chai from 'chai';
-import validate from './index';
+import validate from '../src';
 
-describe('Validate Error Check', () => {
+describe('ValidateError Check', () => {
   const simple_validator = (value, rule) => validate.execute({ 'test': value }, { 'test': rule });
 
   describe('Rule: required', () => {
