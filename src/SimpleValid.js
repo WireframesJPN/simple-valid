@@ -1,4 +1,4 @@
-import Errors from 'simple-error-object';
+import ValidationError from './ValidationError';
 
 /**
  * A list of rules which the property must pass
@@ -185,13 +185,13 @@ export default class SimpleValid {
    * @param {Object<string, *>} values
    * @param {Object<string, RuleConfig>} rules
    * @param {Object<string, RuleMessage>} [messages={}]
-   * @returns {Errors}
+   * @returns {ValidationError}
    */
   execute (values, rules, messages={}) {
     this.setValues(values);
     this.setRules(rules);
 
-    const errors = new Errors();
+    const errors = new ValidationError();
 
     try {
       for (let target in this.check_rules) {
